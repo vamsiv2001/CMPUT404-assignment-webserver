@@ -38,12 +38,12 @@ class MyWebServer(socketserver.BaseRequestHandler):
         path = self.data.split()[1]
         
         if method[:3] != "GET":
-            header = "HTTP/1.1 405 Method Not Allowed\r\n"
-            self.request.sendall(bytearray(header, 'utf-8'))
+            status = "HTTP/1.1 405 Method Not Allowed\r\n"
+            self.request.sendall(bytearray(status, 'utf-8'))
         else:
             if ".." in path:
-                header = "HTTP/1.1 404 Not Found\r\n"
-                self.request.sendall(bytearray(header, 'utf-8'))
+                status = "HTTP/1.1 404 Not Found\r\n"
+                self.request.sendall(bytearray(status, 'utf-8'))
             elif path[-1] == "/":
                 fullPath = os.getcwd() + "/www" + path + "index.html"
                 self.getIndex(fullPath)
@@ -63,13 +63,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
             f = file.read()
             file.close()
         except:
-            header = "HTTP/1.1 404 Not Found\r\n"
-            self.request.sendall(bytearray(header, 'utf-8'))
+            status = "HTTP/1.1 404 Not Found\r\n"
+            self.request.sendall(bytearray(status, 'utf-8'))
             return
-        header = "HTTP/1.1 200 OK\r\n"
+        status = "HTTP/1.1 200 OK\r\n"
         contentType = "Content-Type: text/html\r\n"
         contentLength = f"Content-Length: {len(f)} \r\n\r\n"
-        Val = header + contentType + contentLength + f
+        Val = status + contentType + contentLength + f
         self.request.sendall(bytearray(Val, 'utf-8'))
         return
     #For html (200 OK)
@@ -79,13 +79,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
             f = file.read()
             file.close()
         except:
-            header = "HTTP/1.1 404 Not Found\r\n"
-            self.request.sendall(bytearray(header, 'utf-8'))
+            status = "HTTP/1.1 404 Not Found\r\n"
+            self.request.sendall(bytearray(status, 'utf-8'))
             return
-        header = "HTTP/1.1 200 OK\r\n"
+        status = "HTTP/1.1 200 OK\r\n"
         contentType = "Content-Type: text/html\r\n"
         contentLength = f"Content-Length: {len(f)} \r\n\r\n"
-        Val = header + contentType + contentLength + f
+        Val = status + contentType + contentLength + f
         self.request.sendall(bytearray(Val, 'utf-8'))
         return
     #For CSS (200 OK)
@@ -95,13 +95,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
             f = file.read()
             file.close()
         except:
-            header = "HTTP/1.1 404 Not Found\r\n"
-            self.request.sendall(bytearray(header, 'utf-8'))
+            status = "HTTP/1.1 404 Not Found\r\n"
+            self.request.sendall(bytearray(status, 'utf-8'))
             return
-        header = "HTTP/1.1 200 OK\r\n"
+        status = "HTTP/1.1 200 OK\r\n"
         contentType = "Content-Type: text/css\r\n"
         contentLength = f"Content-Length: {len(f)} \r\n\r\n"
-        Val = header + contentType + contentLength + f
+        Val = status+ contentType + contentLength + f
         self.request.sendall(bytearray(Val, 'utf-8'))
         return
     #For Redirection (301 Moved Permanently)
@@ -111,12 +111,12 @@ class MyWebServer(socketserver.BaseRequestHandler):
             f = file.read()
             file.close()
         except:
-            header = "HTTP/1.1 404 Not Found\r\n"
-            self.request.sendall(bytearray(header, 'utf-8'))
+            status = "HTTP/1.1 404 Not Found\r\n"
+            self.request.sendall(bytearray(status, 'utf-8'))
             return
-        header = "HTTP/1.1 301 Moved Permanently\r\n"
+        status = "HTTP/1.1 301 Moved Permanently\r\n"
         location = f"Location: {path}/\r\n"
-        Val = header + location
+        Val = status + location
         self.request.sendall(bytearray(Val, 'utf-8'))
         return
 
